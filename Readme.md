@@ -84,7 +84,7 @@ Berikut tahapan yang dilakukan pada explorasi dan visualisasi data:
 1. **Penulis Buku dengan Buku Terbanyak**
 
     <div>
-        <img src="asset/Top10PenulisBuku.png">
+        <img src="https://raw.githubusercontent.com/ayalya/Submission-Book-Recommendation-System/main/asset/Top10PenulisBuku.png">
     </div>
 
     *Gambar 1, Visualisasi 10 Penulis Teratas dengan Buku Terbanyak*
@@ -94,7 +94,7 @@ Berikut tahapan yang dilakukan pada explorasi dan visualisasi data:
 2. **Tahun dengan Jumlah Buku Terbit Terbanyak**
 
     <div>
-        <img src="asset/Top10TahunTerbit.png">
+        <img src="https://raw.githubusercontent.com/ayalya/Submission-Book-Recommendation-System/main/asset/Top10TahunTerbit.png">
     </div>
 
     *Gambar 2, Grafik Batang Tahun dengan Jumlah Buku Terbit Terbanyak*
@@ -104,7 +104,7 @@ Berikut tahapan yang dilakukan pada explorasi dan visualisasi data:
 3. **Distribusi Buku yang diberi Rating**
 
     <div>
-        <img src="asset/JumlahRating.png">
+        <img src="https://raw.githubusercontent.com/ayalya/Submission-Book-Recommendation-System/main/asset/JumlahRating.png">
     </div>
 
     *Gambar 3, Grafik Batang Rating Terbanyak*
@@ -114,7 +114,7 @@ Berikut tahapan yang dilakukan pada explorasi dan visualisasi data:
 4. **Distribusi Demografi Usia**
 
     <div>
-        <img src="asset/DemografiUsia.png">
+        <img src="https://raw.githubusercontent.com/ayalya/Submission-Book-Recommendation-System/main/asset/DemografiUsia.png">
     </div>
 
     *Gambar 4, Garfik Batang Persebaran Usia Users*
@@ -187,7 +187,7 @@ Tahapan pertama pengembangan model pada tahapan ini menggunakan teknik Content-B
 Pada tahap ini, judul buku yang dicari adalah "The Woman in the Moon and Other Tales of Forgotten Heroines" karya James Riordan. Model content-based filtering mempu memberikan rekomendasi 5 buku dengan konten yang mirip
 
 <div>
-    <src img="asset/PredictContentBased.png">
+    <img src="https://raw.githubusercontent.com/ayalya/Submission-Book-Recommendation-System/main/asset/PredictContentBased.png">
 </div>
 
 *Gambar 5, Top 5 Hasil Prediksi Content-Based Filtering*
@@ -220,7 +220,7 @@ Tahapan yang dilakukan:
 Pada tahapan ini, model memberikan informasi pengguna dengan `User-ID` 8695 telah memberikan rating pada buku, berikut:
 
 <div>
-    <img src="asset/CFRatingbyUsers.png">
+    <img src="https://raw.githubusercontent.com/ayalya/Submission-Book-Recommendation-System/main/asset/CFRatingbyUsers.png">
 </div>
 
 *Gambar 6, Buku-Buku yang Telah Diberikan Rating oleh Pengguna dengan User-ID 8695*
@@ -228,7 +228,7 @@ Pada tahapan ini, model memberikan informasi pengguna dengan `User-ID` 8695 tela
 Lalu dia akan mendapatkan rekomendasi 10 buku berikut:
 
 <div>
-    <img src="asset/CFReccomendationtoUser.png">
+    <img src="https://raw.githubusercontent.com/ayalya/Submission-Book-Recommendation-System/main/asset/CFReccomendationtoUser.png">
 </div>
 
 *Gambar 7, Buku-Buku yang akan Direkomendasikan kepada Pengguna dengan User-ID 8695*
