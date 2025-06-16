@@ -44,7 +44,7 @@ Dapat diketahui bahwa:
   - `Image-URL-S`, diperoleh dari web Amazon Web Service (AWS) untuk menautkan ke gambar sampul kecil.
   - `Image-URL-M`, diperoleh dari web AWS untuk menautkan ke gambar sampul sedang.
   - `Image-URL-L`, diperoleh dari web AWS untuk menautkan ke gambar sampul besar.
-2. Dataset `Ratings`, memiliki jumlah data 340.556 data dengan 3 kolom, yaitu:
+2. Dataset `Ratings`, memiliki jumlah data 1.149.780 data dengan 3 kolom, yaitu:
   - `User-ID`, ID pengguna yang dianonimus dan petakan dengan nilai integer.
   - `ISBN`, nomor identifikasi buku yang diberikan rating oleh users.
   - `Book-Rating`, rating buku bernilai 0 sampai 10 (semakin tinggi nilai, semakin besar apresiasi).
@@ -56,29 +56,40 @@ Dapat diketahui bahwa:
 ### Tipe Data Setelah Dilakukan Pembersihan
 
 1. **Book.csv**
-    |Kolom                  | Tipe Data |
-    |ISBN                   | object    |
-    |Book-Title             | object    |
-    |Book-Author            | object    |
-    |Year-Of-Publication    | object    |
-    |Publisher              | object    |
-    |Image-URL-S            | object    |
-    |Image-URL-M            | object    |
-    |Image-URL-L            | object    |
+    Kolom                  | Tipe Data 
+    :----------------:|:--------:
+    ISBN                   | object    
+    Book-Title             | object    
+    Book-Author            | object    
+    Year-Of-Publication    | object    
+    Publisher              | object    
+    Image-URL-S            | object    
+    Image-URL-M            | object    
+    Image-URL-L            | object    
 
 2. **Users.csv**
-    |Kolom                  | Tipe Data |
-    |User-ID                | int64     |
-    |ISBN                   | object    |
-    |Book-Rating            | int64     |
+    Kolom                  | Tipe Data 
+    :----------------:|:--------:
+    User-ID                | int64     
+    ISBN                   | object    
+    Book-Rating            | int64     
 
 3. **Users.csv**
-    |Kolom                  | Tipe Data |
-    |User-ID                | int64     |
-    |Location               | object    |
-    |Age                    | int64     |
+    Kolom                  | Tipe Data 
+    :----------------:|:--------:
+    User-ID                | int64     
+    Location               | object    
+    Age                    | int64     
 
-**Rubrik/Kriteria Tambahan (Opsional)**:
+### Kondisi Data
+Hasil pemeriksaan data ditemukan bahwa data:
+1. Missing Values:
+- Pada dataset `Books.csv`, data yang hilang terdapat pada kolom `Book-Author` 2 data, `Publisher` sebanyak 2 data, dan `Image-URL-L` sebanyak 3 data.
+- Pada dataset `Ratings.csv`, tidak terdapat data yang hilang.
+- Pada dataset `Users.csv`, ditemukan data yang hilang pada kolom `Age` sebanyak 110.762 data.
+2. Data Duplikat, tidak ditemukan data duplikat pada ketiga data.
+
+### Exploratory Data Analysis (EDA)
 
 Berikut tahapan yang dilakukan pada explorasi dan visualisasi data:
 1. **Penulis Buku dengan Buku Terbanyak**
@@ -127,24 +138,23 @@ Pada tahapan ini, dilakukan proses persiapan data untuk memastikan data bersih, 
 ### Data Preparation Pendekatan Content-Based Filtering
 Pada pendekatan content-based filtering, variabel yang akan digunakan, yaitu `ISBN`, `Book-Title`, `Book-Author`, dan `Publisher`. Berikut tahapan yang dilakukan pada tahap data preparation dengan pendekatan content-based filtering:
 
-#### 1. Menghapus nilai yang kosong
+#### 1. Penghapusan kolom yang tidak digunakan untuk pemodelan
+Untuk membangun model sistem rekomendasi menggunakan content-based filtering menggunakan data informasi buku, sedangkan collaborative filtering menggunakan data yang mengandung representasi pengguna lain. Maka dari itu hanya beberapa bagian data yang akan digunakan dan data `Books.csv` dan `Ratings.csv` yang akan digunakan. Sedangkan pada data `Books.csv`, fitur URL seperti `Image-URL-S`, `Image-URL-M`, dan `Image-URL-L` dihapus.
+
+#### 2. Menghapus nilai yang kosong
 Nilai kosong pada data yang akan digunakan terlihat pada `Book-Author`, `Publisher`, dan `Year-Of-Publication`. Jumlah data yang kosong terhitung sedikit dan baris yang kosong akan dihapus karena tidak mempengaruhi informasi pada keseluruhan data.
 
-#### 2. Menghapus Nilai Invalid
+#### 3. Menghapus Nilai Invalid
 Pada tahapan eksplorasi data, didapatkan bahwa terdapat nilai yang tidak valid karena salah input. Nilai yang tidak valid ini terdapat kesalahan pada fitur `Year-Of-Publication` menjadi nilai `Publisher` yang berisi "DK Publishing Inc" dan "Gallimard". Jumlah data yang mengandung nilai invalid adalah tiga data dan baris yang mengandung kedua nilai tersebut dihapus. Maka dari itu, `Year-Of-Publication` dapat diganti tipe datanya menjadi integer.
 
-#### 3. Standarisasi ISBN
+#### 4. Standarisasi ISBN
 ISBN merupakan nilai unik pada setiap judul buku. Jika terdapat nilai ISBN yang sama pada dua buku atau lebih, dapat dikatakan bias dan nilainya tidak valid. Panjang karakter ISBN adalah 10 hingga 13 dan diawali dengan huruf. Awalnya nilai `ISBN` adalah 270.144 dan `Book-Title` sebanyak 241.065. Setelah dilakukan standarisasi data, didapatkan nilai unik `ISBN` dengan `Book-Title` memiliki panjang yang sama, yaitu 247.936 baris.
 
-#### 4. Penggabungan Data
+#### 5. Penggabungan Data
 Data yang telah dibersihkan digabung menjadi DataFrame dengan kolom `ISBN`, `Book-Title`,`Book-Author`, `Publisher`, dan `Year-Of-Publication` dengan jumlah baris 247.936. Pada dataset ini juga ISBN akan dijadikan key-value pada tahapan penyatuan dan pencocokan data pada tahap selanjutnya. Karena data dengan jumlah tersebut sangat banyak, untuk memanfaatkan komputasi dibatasi data yang akan digunakan sebanyak 20.000 baris data.
 
-#### 5. TF-IDF Vectorization
+#### 6. TF-IDF Vectorization
 Fitur-fitur di atas diubah menjadi representasi numerik dan matriks menggunakan library `sklearn.feature_extraction.text`. TF merupakan proses mengukur seberapa sering kata-kata muncul dan IDF mengukur seberapa unik atau langka sebuah kata dari dokumen. Pada proses ini juga dilakukan proses penghapusan stopwords dalam Bahasa Inggris pada fitur `Book-Author`
-
-#### 6. Cosine Similarity
-Untuk mengukur kesamaan antara dua vektor, digunakan perhitungan pada matriks TF-IDF sebelumnya menggunakan cosine similarity yang diambil dari library `sklearn.metrics.parwise`.
-
 
 ### Data Preparation Pendekatan Collaborative Filtering
 Pada pendekatan ini, data yang akan digunakan menggunakan fitur-fitur pada data `Users.csv` dengan memanfaatkan data rating dan informasi pengguna. Sebelumnya, proses persiapan data rating perlu ditransformasikan ke dalam bentuk matriks numerik untuk memudahkan model belajar. Dilakukan proses encoder pada fitur `User-ID` dan `ISBN` yang menjadi `book_title` ke dalam bilangan bulat dan pemetaan ke dalam dataframe yang telah rapih sebelumnya. Berikut adalah tahapan-tahapan persiapan data untuk pendekatan collaborative filtering:
@@ -155,8 +165,14 @@ Karena data rating banyak bernilai 0 atau tidak memberikan rating nyata, jadi ha
 #### 2. Melakukan Encoding
 Proses encoder atau pengkodean fitur dilakukan pada `User-ID` ke `ISBN` untuk menjadi representasi bilangan bulat. Selanjutnya dilakuakan pencocokan dengan dataset yang sebelumnya telah rapih dengan `ISBN`. Sehingga fitur yang akan digunakan untuk pendekatan collaborative filtering adalah `Book-Rating`, `user` (nilai `User-ID` yang telah dilabeli), dan `Book-Title` yang telah dilabeli.
 
-#### 3. Pemisahan Data Latih dan Data Uji
-Membuat variabel baru khusus untuk Collaborative Filtering. Data sampel pada model ini adalah `user` dan `book_title`, sedangkan targetnya adalah `Book-Rating`. Pemisahan data dilakukan membagi data latih menjadi 80% dan data uji atau validasi menjadi 20%.
+#### 3. Pengacakan data (shuffling)
+Baris data dilakukan pengacakan agar model bisa menggeneralisasi data tanpa harus memperhatikan urutan dari data yang telah dilakuakan encoding sebelumnya.
+
+#### 4. Normalisasi pada fitur Rating Buku
+Data sampel pada model ini adalah `user` dan `book_title`, sedangkan targetnya adalah `Book-Rating`. Pada tahapan ini, `Book-Rating` dilakukan normalisasi data agar kompleksitas model dalam pelatihan berkurang.
+
+#### 5. Pemisahan Data Latih dan Data Uji
+Membuat variabel baru khusus untuk Collaborative Filtering. Pemisahan data dilakukan membagi data latih menjadi 80% dan data uji atau validasi menjadi 20%.
 
 
 ## Modeling
@@ -167,8 +183,8 @@ Pada bagian ini model sistem rekomendasi dibuat untuk menyelesaikan permasalahan
 #### Cara Kerja
 Tahapan pertama pengembangan model pada tahapan ini menggunakan teknik Content-Based Filtering. Teknik ini merupakan sebuah pendekatan dalam sistem rekomendasi dengan memanfaatkan informasi atau konten dari item atau pengguna untuk membuat rekomendasi. Ide dasar pendekatan ini adalah dengan mencocokan preferensi pengguna dengan karakteristik atau konten dari item yang pernah dilihat atau disukai pengguna sebelumnya. Misalnya, jika pengguna pernah menyukai karya atau membeli buku novel "The Woman in The Moon and Other Tales of Forgotten Heroines" dan buku tersebut memiliki fitur penulis buku bernama "James Riordan", maka sistem akan mencarikan dan merekomendasikan buku lain dengan fitur yang serupa berbentuk rekomendasi top-N kepada pengguna. Pada pendekatan ini, sistem akan menampilkan Top 5 buku rekomendasi dengan langkah-langkah:
 1. Menggabungkan Fitur `ISBN`,`Book-Title`, `Book-Author`, dan `Publisher`.
-2. Mengubah representasi teks menjadi vektor menggunakan TF-IDF.
-3. Mengukur kesamaan antar dua vektor TF-IDF antar buku menggunakan cosine similarity.
+2. Mengubah representasi teks menjadi vektor menggunakan TF-IDF dengan library `sklearn.feature_extraction.text`.
+3. Mengukur kesamaan antar dua vektor TF-IDF antar buku menggunakan cosine similarity dengan library `sklearn.metrics.parwise`.
 4. Menyajikan rekomendasi buku yang serupa dengan buku yang disukai pengguna.
 
 #### Parameter
@@ -283,12 +299,12 @@ Pendekatan ini menggunakan evaluasi matriks Mean Squared Error dan Root Mean Squ
 
 *Tabel 2, Evaluasi Matriks Content Filtering*
 
-|        Data       |   MAE   |  RMSE   |
+|        Data       |   MSE   |  RMSE   |
 |:-----------------:|:-------:|:-------:|
 | **Latih**         | 0.0424  | 0.2059  |
 | **Uji**           | 0.0804  | 0.2836  |
 
-Artinya, model lebih baik melakukan pelatihan dibandingkan dengan pengujian. Meskipun demikian, nilainya data latih dan data uji tidak berbeda jauh yang menandakan model tidak terjadi overfitting dan menggeneralisasi dengan baik.
+Artinya, model lebih baik melakukan pelatihan dibandingkan dengan pengujian ditandai dengan MSE dan RMSE pada data latih lebih kecil dibandingkan dengan data uji. Meskipun demikian, nilainya data latih dan data uji tidak berbeda jauh yang menandakan model tidak terjadi overfitting dan menggeneralisasi dengan baik.
 
 Evaluasi pada kedua model menandakan bahwa model dapat berjalan dengan baik, juga memberikan rekomendasi yang berkualitas dan kinerjanya terukur.
 
